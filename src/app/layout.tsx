@@ -12,7 +12,7 @@ export default function RootLayout({ children }: Children) {
       <body className="text-lg">
         <Wrapper>
           <Navbar />
-          <main className="mx-auto mt-12 max-w-5xl px-4">{children}</main>
+          <main className="mx-auto mt-12 max-w-6xl px-4">{children}</main>
         </Wrapper>
       </body>
     </html>

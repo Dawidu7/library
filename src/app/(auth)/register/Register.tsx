@@ -2,7 +2,6 @@
 
 import axios from "axios"
 import { redirect } from "next/navigation"
-import { signIn } from "next-auth/react"
 import type { FormEvent } from "react"
 import Account from "./Account"
 import Profile from "./Profile"
@@ -92,13 +91,6 @@ export default function Register({ positions }: RegisterProps) {
         {}
       )
     )
-
-    if (account.status === 201) {
-      signIn("credentials", {
-        email: account.email,
-        password: account.password,
-      })
-    }
 
     redirect("http://localhost:3000/")
   }

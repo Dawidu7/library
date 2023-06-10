@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Reader" ALTER COLUMN "signUpDate" SET DEFAULT CURRENT_TIMESTAMP;
+
+-- AlterTable
+ALTER TABLE "Rental" ALTER COLUMN "dateOfReturn" DROP NOT NULL;

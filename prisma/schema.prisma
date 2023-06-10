@@ -74,7 +74,7 @@ model Reader {
   street       String
   postcode     String
   city         String
-  signUpDate   DateTime
+  signUpDate   DateTime  @default(now())
   deletionDate DateTime?
   id           String    @unique
   function     Function
@@ -85,15 +85,15 @@ model Reader {
 }
 
 model Rental {
-  transaction  Int      @id @default(autoincrement())
-  book         Book     @relation(fields: [signature], references: [signature])
+  transaction  Int       @id @default(autoincrement())
+  book         Book      @relation(fields: [signature], references: [signature])
   signature    Int
-  employer     Employer @relation(fields: [employerId], references: [id])
+  employer     Employer  @relation(fields: [employerId], references: [id])
   employerId   String
-  reader       Reader   @relation(fields: [readerNumber], references: [number])
+  reader       Reader    @relation(fields: [readerNumber], references: [number])
   readerNumber Int
-  dateOfRental DateTime @default(now())
-  dateOfReturn DateTime
+  dateOfRental DateTime  @default(now())
+  dateOfReturn DateTime?
 }
 
 enum Function {
