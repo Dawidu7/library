@@ -1,0 +1,107 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Account {
+  id         String    @id @default(cuid())
+  email      String    @unique
+  password   String
+  employer   Employer? @relation(fields: [employerId], references: [id])
+  employerId String?   @unique
+}
+
+model Employer {
+  id               String    @id @default(cuid())
+  name             String
+  surname          String
+  position         Position? @relation(fields: [positionId], references: [id])
+  positionId       Int
+  city             String
+  dateOfEmployment DateTime  @default(now())
+  salary           Float
+  rental           Rental[]
+  account          Account?
+
+  @@unique([name, surname])
+}
+
+model Position {
+  id       Int        @id @default(autoincrement())
+  name     String     @unique
+  employer Employer[]
+}
+
+model Section {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  Book Book[]
+}
+
+model Author {
+  id      Int    @id @default(autoincrement())
+  name    String
+  surname String
+  Book    Book[]
+
+  @@unique([name, surname])
+}
+
+model Book {
+  signature        Int      @id @default(autoincrement())
+  title            String   @unique
+  publisher        String
+  publicationPlace String
+  publicationYear  Int
+  volume           Int
+  price            Float
+  section          Section  @relation(fields: [sectionId], references: [id])
+  sectionId        Int
+  author           Author   @relation(fields: [authorId], references: [id])
+  authorId         Int
+  rental           Rental[]
+}
+
+model Reader {
+  number       Int       @id @default(autoincrement())
+  name         String
+  surname      String
+  dateOfBirth  DateTime
+  street       String
+  postcode     String
+  city         String
+  signUpDate   DateTime
+  deletionDate DateTime?
+  id           String    @unique
+  function     Function
+  gender       Gender
+  rental       Rental[]
+
+  @@unique([name, surname])
+}
+
+model Rental {
+  transaction  Int      @id @default(autoincrement())
+  book         Book     @relation(fields: [signature], references: [signature])
+  signature    Int
+  employer     Employer @relation(fields: [employerId], references: [id])
+  employerId   String
+  reader       Reader   @relation(fields: [readerNumber], references: [number])
+  readerNumber Int
+  dateOfRental DateTime @default(now())
+  dateOfReturn DateTime
+}
+
+enum Function {
+  PD
+  S
+}
+
+enum Gender {
+  K
+  M
+}
